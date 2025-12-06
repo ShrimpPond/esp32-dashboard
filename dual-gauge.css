@@ -1,0 +1,671 @@
+/* =========================================================
+   FONT IMPORT
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
+:root {
+  /* Font sizes (Responsive) */
+  --fs-base: clamp(14px, 1.2vw + 10px, 18px);
+  --fs-top-title: clamp(18px, 2vw + 8px, 24px);
+  --fs-logo: clamp(20px, 3vw, 28px);
+  --fs-settings: clamp(20px, 3.2vw, 32px);
+  --fs-gauge-big: clamp(18px, 2.8vw, 28px);
+  --fs-gauge-sub: clamp(11px, 1.2vw, 14px);
+  
+  /* Colors */
+  --clr-bg: #606060;
+  --clr-white: #8b7c7c;
+  --clr-dark: #1e1e1e;
+  --clr-gray: #475569;
+  --clr-gray-light: #f1f5f9;
+
+  --clr-temp: #ef4444;
+  --clr-rh: #06b6d4;
+
+  --clr-voltage: #facc15;
+  --clr-current: #38bdf8;
+  --clr-energy: #4ade80;
+
+  /* Effects */
+  --shadow-card: 0 15px 18px rgba(0,0,0,0.25);
+  --shadow-heavy: 0 8px 18px rgba(0,0,0,0.25);
+  --radius-card: 16px;
+}
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--clr-bg);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+
+/* =========================================================
+   DASHBOARD WRAPPER
+========================================================= */
+.dashboard-container {
+  margin-top: 70px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+.iot-topbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+  background: linear-gradient(90deg, #2bd2ff, #bbb6b6);
+  color: var(--clr-white);
+
+  border-bottom: 3px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--shadow-heavy);
+  z-index: 999;
+}
+
+.iot-topbar .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iot-topbar .logo {
+  font-size: var(--fs-logo);
+  font-weight: 700;
+}
+
+.iot-topbar .title {
+  color: #ffffff;
+  font-size: var(--fs-top-title);
+  font-weight: 600;
+}
+
+.iot-topbar .right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+  margin-right: 12px;
+}
+
+.status .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status .online { background: #00ff6a; box-shadow: 0 0 8px #00ff6a; }
+.status .offline { background: #ff5252; box-shadow: 0 0 8px #ff5252; }
+
+.status-text {
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-icon {
+  font-size: var(--fs-settings);
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.25s ease;
+}
+
+.settings-icon:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.12);
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.color-dot.temp { background: var(--clr-temp); }
+.color-dot.rh   { background: var(--clr-rh); }
+
+
+/* =========================================================
+   BASIC ELECTRICAL CARDS
+========================================================= */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+.card {
+  width: 180px;
+  background: var(--clr-white);
+  padding: 20px;
+  border-radius: 18px;
+
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.card .title {
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: #000;
+}
+
+.card .value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+/* =========================================================
+   PZEM – 3 GRID
+========================================================= */
+.pzem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 20px 0;
+}
+
+.sensor-card {
+  background: #252b36;
+  border-radius: var(--radius-card);
+  padding: 20px;
+  
+  color: #e2e8f0;
+  box-shadow: var(--shadow-card);
+  border: 1px solid #334155;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 140px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.card-label {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.sensor-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* THEMES */
+.theme-voltage .sensor-icon { background: rgba(250,204,21,0.15); color: var(--clr-voltage); }
+.theme-voltage .value-big { color: var(--clr-voltage); }
+
+.theme-current .sensor-icon { background: rgba(56,189,248,0.15); color: var(--clr-current); }
+.theme-current .value-big { color: var(--clr-current); }
+
+.theme-energy .sensor-icon { background: rgba(74,222,128,0.15); color: var(--clr-energy); }
+.theme-energy .value-big { color: var(--clr-energy); }
+
+.value-big {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.unit {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+
+/* =========================================================
+   POWER MAIN CARD (Wide)
+========================================================= */
+.card-power-main {
+  grid-column: 1 / -1;
+
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  padding: 30px 40px;
+
+  border-radius: var(--radius-card);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.power-content h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.power-value {
+  font-size: 3.6rem;
+  font-weight: 700;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.25);
+}
+
+.power-icon-bg {
+  font-size: 5rem;
+  opacity: 0.2;
+}
+
+
+/* =========================================================
+   CHART AREA
+========================================================= */
+.chart-container {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+  background: var(--clr-dark);
+
+  padding: 16px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+/* ================= MOBILE SETTINGS APP ================= */
+
+.settings-app {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  animation: appSlideUp 0.25s ease;
+}
+
+@keyframes appSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.settings-app.hidden {
+  display: none;
+}
+
+/* ===== Topbar ===== */
+.settings-topbar {
+  height: 56px;
+  background: #020617;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.back-btn {
+  border: none;
+  background: transparent;
+  color: #38bdf8;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.app-title {
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.app-spacer {
+  width: 24px;
+}
+
+/* ===== Body ===== */
+.settings-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.settings-section {
+  background: #020617;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.section-title {
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #020617;
+}
+
+/* ===== Setting Items ===== */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border-top: 1px solid #1e293b;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.setting-input,
+.setting-select {
+  width: 120px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 8px;
+  text-align: right;
+}
+
+/* ===== Toggle Switch ===== */
+.toggle-item {
+  gap: 10px;
+}
+
+.switch {
+  position: relative;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #334155;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background: #22c55e;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+/* ===== Footer ===== */
+.settings-footer {
+  padding: 12px;
+}
+
+.save-app-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+    /* =========================================================
+       GAUGE STYLES (UPDATED)
+    ========================================================= */
+    .gauge-card {
+        background: var(--clr-white);
+        border-radius: var(--radius-card);
+        padding: 30px;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .gauge-wrapper {
+        display: flex;
+        flex-direction: column; /* มือถือเรียงลงมา */
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+    }
+
+    @media (min-width: 640px) {
+        .gauge-wrapper {
+            flex-direction: row; /* จอใหญ่เรียงแนวนอน */
+            justify-content: space-around;
+        }
+    }
+
+    /* แก้ไขขนาด SVG ให้ยืดหยุ่นขึ้น */
+    .gauge-responsive {
+        /* ปรับขนาดให้ใหญ่ขึ้นตามต้องการ */
+        width: clamp(160px, 35vw, 260px); 
+        height: clamp(160px, 35vw, 260px);
+        position: relative;
+    }
+
+    .transition-gauge {
+        transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (min-width: 850px) {
+  .dashboard-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cards-container { grid-column: 2 / 3; align-self: center; }
+  .chart-container { grid-column: 1 / 3; }
+}
+
+@media (max-width: 480px) {
+  .dual { width: 200px; height: 200px; }
+  .chart-container canvas { height: 230px !important; }
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINT SYSTEM
+========================================================= */
+
+/* ========== MOBILE: 0 - 480px ========== */
+@media (max-width: 480px) {
+
+  .iot-topbar {
+    height: 52px;
+    padding: 0 12px;
+  }
+
+  .iot-topbar .logo { font-size: 18px; }
+  .iot-topbar .title { font-size: 16px; }
+
+  .dashboard-container {
+    margin-top: 60px;
+    padding: 8px;
+    gap: 12px;
+  }
+
+  .gauge-card {
+    padding: 16px;
+  }
+
+  .gauge-responsive {
+    width: 130px;
+    height: 130px;
+  }
+
+  #val-temp,
+  #val-humid {
+    font-size: 22px;
+  }
+
+  .pzem-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .sensor-card {
+    padding: 14px;
+    min-height: 120px;
+  }
+
+  .value-big {
+    font-size: 1.6rem;
+  }
+
+  .card-power-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .power-value {
+    font-size: 2.2rem;
+  }
+
+  .chart-container canvas {
+    height: 220px !important;
+  }
+}
+
+
+/* ========== TABLET: 481px - 1024px ========== */
+@media (min-width: 481px) and (max-width: 1024px) {
+
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .gauge-responsive {
+    width: 200px;
+    height: 200px;
+  }
+
+  #val-temp,
+  #val-humid {
+    font-size: 32px;
+  }
+
+  .pzem-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-power-main {
+    grid-column: 1 / -1;
+  }
+
+  .power-value {
+    font-size: 3rem;
+  }
+
+  .chart-container canvas {
+    height: 280px !important;
+  }
+}
+
+
+/* ========== LAPTOP & DESKTOP: 1025px+ ========== */
+@media (min-width: 1025px) {
+
+  .dashboard-container {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 24px;
+  }
+
+  .gauge-responsive {
+    width: 260px;
+    height: 260px;
+  }
+
+  #val-temp,
+  #val-humid {
+    font-size: 42px;
+  }
+
+  .pzem-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sensor-card {
+    min-height: 150px;
+  }
+
+  .value-big {
+    font-size: 2.2rem;
+  }
+
+  .power-value {
+    font-size: 3.8rem;
+  }
+
+  .chart-container canvas {
+    height: 340px !important;
+  }
+}

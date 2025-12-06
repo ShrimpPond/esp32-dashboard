@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IoT Dashboard</title>
+
+<link rel="stylesheet" href="dual-gauge.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body class="bg-gray-250">
+
+<div class="iot-topbar">
+  <div class="left">
+    <span class="logo">📊</span>
+    <span class="title">Dashboard</span>
+  </div>
+
+  <div class="right">
+    <div class="status">
+      <span class="dot online"></span>
+      <span class="status-text">Online</span>
+      <div class="settings-icon">⚙️</div>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+ <!-- Left Column: Gauges -->
+  <div class="gauge-card">
+    <!-- Header Removed -->
+    
+    <div class="gauge-wrapper">
+        <!-- Temperature Gauge -->
+        <div class="flex flex-col items-center">
+            <div class="gauge-responsive">
+                <!-- SVG viewBox 100x100 for easy calc -->
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <!-- Background Circle -->
+                    <!-- cx, cy = 50 (center) -->
+                    <!-- r = 42 (radius) to fit stroke inside 100px box (42 + 8 = 50) -->
+                    <!-- Stroke width = 12 -->
+                    <circle cx="50" cy="50" r="42" stroke="#f1f5f9" stroke-width="12" fill="none"></circle>
+                    
+                    <!-- Value Circle -->
+                    <!-- Circumference = 2 * PI * 42 ≈ 263.89 -->
+                    <circle id="ring-temp" cx="50" cy="50" r="42" 
+                            stroke="#ef4444" stroke-width="12" fill="none" 
+                            stroke-linecap="round" 
+                            stroke-dasharray="263.89" 
+                            stroke-dashoffset="263.89" 
+                            class="transition-gauge"></circle>
+                </svg>
+                
+                <!-- Center Text -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-700">
+                    <i data-lucide="thermometer" class="w-6 h-6 mb-1 text-rose-500"></i>
+                    <div class="flex items-baseline">
+                        <span id="val-temp" class="text-3xl md:text-4xl font-bold">0</span>
+                        <span class="text-xs md:text-sm text-slate-400 font-semibold ml-1">°C</span>
+                    </div>
+                </div>
+            </div>
+            <span class="mt-4 text-sm font-bold text-slate-500 uppercase tracking-wider">Temperature</span>
+        </div>
+
+        <!-- Vertical Divider (Hidden on mobile) -->
+        <div class="hidden sm:block w-px h-48 bg-slate-200"></div>
+
+        <!-- Humidity Gauge -->
+        <div class="flex flex-col items-center">
+            <div class="gauge-responsive">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" stroke="#f1f5f9" stroke-width="12" fill="none"></circle>
+                    <circle id="ring-humid" cx="50" cy="50" r="42" 
+                            stroke="#3b82f6" stroke-width="12" fill="none" 
+                            stroke-linecap="round" 
+                            stroke-dasharray="263.89" 
+                            stroke-dashoffset="263.89" 
+                            class="transition-gauge"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-700">
+                    <i data-lucide="droplets" class="w-6 h-6 mb-1 text-blue-500"></i>
+                    <div class="flex items-baseline">
+                        <span id="val-humid" class="text-3xl md:text-4xl font-bold">0</span>
+                        <span class="text-xs md:text-sm text-slate-400 font-semibold ml-1">%</span>
+                    </div>
+                </div>
+            </div>
+            <span class="mt-4 text-sm font-bold text-slate-500 uppercase tracking-wider">Humidity</span>
+         </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Electrical Grid -->
+  <div class="flex flex-col gap-5">
+
+
+
+  <!-- ELECTRICAL GRID -->
+  <div class="pzem-grid">
+
+    <div class="sensor-card card-power-main relative">
+        <div class="power-content">
+            <h3>Power</h3>
+            <div class="power-value">1,250 <span class="power-unit">W</span></div>
+            <div class="sub-info">
+                <span><i class="fas fa-wave-square"></i> 50.0 Hz</span>
+                <span><i class="fas fa-chart-pie"></i> PF 0.98</span>
+            </div>
+        </div>
+        <i class="fas fa-plug power-icon-bg absolute right-4 bottom-4"></i>
+    </div>
+
+    <div class="sensor-card theme-voltage">
+        <div class="card-header">
+            <span class="card-label">Volt</span>
+            <div class="sensor-icon"><i class="fas fa-bolt"></i></div>
+        </div>
+        <div class="value-big">230 <span class="unit">V</span></div>
+    </div>
+
+    <div class="sensor-card theme-current">
+        <div class="card-header">
+            <span class="card-label">Amp</span>
+            <div class="sensor-icon"><i class="fas fa-water"></i></div>
+        </div>
+        <div class="value-big">5.54 <span class="unit">A</span></div>
+    </div>
+
+    <div class="sensor-card theme-energy">
+        <div class="card-header">
+            <span class="card-label">Energy</span>
+            <div class="sensor-icon"><i class="fas fa-leaf"></i></div>
+        </div>
+        <div class="value-big">452 <span class="unit">kWh</span></div>
+    </div>
+
+    <div class="sensor-card theme-cost">
+        <div class="flex justify-between items-start mb-2">
+            <span class="text-sm font-bold text-slate-500 uppercase">Daily Cost</span>
+            <div class="text-rose-500 text-xl"><i class="fas fa-coins"></i></div>
+        </div>
+        <div class="value-big"><span id="val-daily-cost">56.25</span> <span class="unit">฿</span></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= MOBILE SETTINGS APP ================= -->
+<div id="settingsApp" class="settings-app hidden">
+
+  <!-- ===== Top Bar ===== -->
+  <div class="settings-topbar">
+    <button id="closeSettingsApp" class="back-btn">←</button>
+    <span class="app-title">Settings</span>
+    <span class="app-spacer"></span>
+  </div>
+
+  <!-- ===== Content ===== -->
+  <div class="settings-body">
+
+  <!-- ================= DEVICE ================= -->
+  <div class="settings-section">
+    <div class="section-title">Device</div>
+
+    <div class="setting-item">
+      <span>Device Name</span>
+      <input type="text" value="ESP32-DASH" class="setting-input">
+    </div>
+
+    <div class="setting-item">
+      <span>Refresh Rate (s)</span>
+      <input type="number" value="2" class="setting-input">
+    </div>
+  </div>
+
+  <!-- ================= RELAY CONTROL BY SENSOR ================= -->
+  <div class="settings-section">
+    <div class="section-title">Relay Auto Control</div>
+
+    <div class="setting-item toggle-item">
+      <span>Enable Auto Relay</span>
+      <label class="switch">
+        <input type="checkbox" id="relayAuto">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-item">
+      <span>Temp ON ≥ (°C)</span>
+      <input type="number" value="35" class="setting-input" id="tempOn">
+    </div>
+
+    <div class="setting-item">
+      <span>Temp OFF ≤ (°C)</span>
+      <input type="number" value="30" class="setting-input" id="tempOff">
+    </div>
+
+    <div class="setting-item">
+      <span>Humidity ON ≥ (%)</span>
+      <input type="number" value="80" class="setting-input" id="humiOn">
+    </div>
+
+    <div class="setting-item">
+      <span>Humidity OFF ≤ (%)</span>
+      <input type="number" value="60" class="setting-input" id="humiOff">
+    </div>
+  </div>
+
+  <!-- ================= ALERT SYSTEM ================= -->
+  <div class="settings-section">
+    <div class="section-title">Alert System</div>
+
+    <div class="setting-item toggle-item">
+      <span>Enable Alert</span>
+      <label class="switch">
+        <input type="checkbox" id="alertEnable" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-item">
+      <span>Temp High Alert (°C)</span>
+      <input type="number" value="40" class="setting-input" id="alertTempHigh">
+    </div>
+
+    <div class="setting-item">
+      <span>Temp Low Alert (°C)</span>
+      <input type="number" value="10" class="setting-input" id="alertTempLow">
+    </div>
+
+    <div class="setting-item">
+      <span>Humidity High Alert (%)</span>
+      <input type="number" value="90" class="setting-input" id="alertHumiHigh">
+    </div>
+
+    <div class="setting-item">
+      <span>Humidity Low Alert (%)</span>
+      <input type="number" value="30" class="setting-input" id="alertHumiLow">
+    </div>
+  </div>
+
+  <!-- ================= SAVE ================= -->
+  <div class="settings-footer">
+    <button class="save-app-btn" id="saveSettings">💾 Save Settings</button>
+  </div>
+
+    </div>
+</div>
+
+
+<div class="chart-container">
+  <canvas id="tempHumiChart"></canvas>
+</div>
+
+<script src="status-ESP32.js"></script>
+<script>
+Lucide.createIcons();
+</script>
+
+</body>
+</html>
